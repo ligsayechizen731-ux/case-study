@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PharmaCare</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #1e293b;
+        }
+
+        .sidebar {
+            position: fixed;
+            width: 220px;
+            height: 100vh;
+            padding: 20px;
+            background: #102a43;
+            color: white;
+        }
+
+        .logo {
+            font-size: 21px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .menu-item {
+            padding: 13px;
+            margin-bottom: 6px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .menu-item:hover,
+        .menu-item.active {
+            background: #1976d2;
+        }
+
+        main {
+            margin-left: 220px;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 18px 25px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .search {
+            width: 60%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+        }
+
+        .content {
+            padding: 25px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            margin: 8px 0 20px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .card,
+        .section {
+            background: white;
+            padding: 18px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #0000000d;
+        }
+
+        .card-title {
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .card-number {
+            color: #1976d2;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        button {
+            padding: 9px 14px;
+            border: 0;
+            border-radius: 6px;
+            background: #1976d2;
+            color: white;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 11px 8px;
+            text-align: left;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        th {
+            background: #f8fafc;
+        }
+
+        .badge {
+            padding: 5px 9px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+
+        .stock {
+            color: #15803d;
+            background: #dcfce7;
+        }
+
+        .low {
+            color: #b45309;
+            background: #fef3c7;
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                width: 170px;
+                padding: 12px;
+            }
+
+            main {
+                margin-left: 170px;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="logo">💊 PharmaCare</div>
+
+        <div class="menu-item active" onclick="showPage('dashboard', this)">
+            🏠 Dashboard
+        </div>
+
+        <div class="menu-item" onclick="showPage('medicines', this)">
+            💊 Medicines
+        </div>
+
+        <div class="menu-item" onclick="showPage('categories', this)">
+            📁 Categories
+        </div>
+
+        <div class="menu-item" onclick="showPage('stocks', this)">
+            📦 Stocks
+        </div>
+    </aside>
+
+    <main>
+        <header>
+            <input
+                class="search"
+                id="searchBox"
+                placeholder="Search medicine..."
+                oninput="searchMedicine()"
+            >
+            <b>👤 Admin</b>
+        </header>
+
+        <div class="content">
+            <section id="dashboard" class="page">
+                <h1>Welcome, Admin!</h1>
+                <div class="subtitle">Pharmacy Management Dashboard</div>
+
+                <div class="cards">
+                    <div class="card">
+                        <div class="card-title">Total Medicines</div>
+                        <div class="card-number" id="totalMedicines">0</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Categories</div>
+                        <div class="card-number" id="totalCategories">0</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Total Stock</div>
+                        <div class="card-number" id="totalStock">0</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>Pharmacy Overview</h2>
+                    <p class="subtitle">
+                        Use the menu to view medicines, categories, and available stocks.
+                    </p>
+                </div>
+            </section>
+
+            <section id="medicines" class="page" style="display:none">
+                <h1>💊 Medicines</h1>
+                <div class="subtitle">Manage medicine information.</div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <h2>Medicine List</h2>
+                        <button onclick="addMedicine()">+ Add Medicine</button>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Medicine</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                            </tr>
+                        </thead>
+                        <tbody id="medicineTable"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="categories" class="page" style="display:none">
+                <h1>📁 Categories</h1>
+                <div class="subtitle">Medicine categories.</div>
+
+                <div class="section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Category</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categoryTable"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="stocks" class="page" style="display:none">
+                <h1>📦 Available Stocks</h1>
+                <div class="subtitle">Check current medicine stock.</div>
+
+                <div class="section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Medicine</th>
+                                <th>Category</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stockTable"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        var data = {
+            categories: [
+                {
+                    id: "CAT001",
+                    name: "Analgesic",
+                    description: "Pain relievers"
+                },
+                {
+                    id: "CAT002",
+                    name: "Antibiotic",
+                    description: "Bacterial infections"
+                },
+                {
+                    id: "CAT003",
+                    name: "Vitamin",
+                    description: "Vitamins and supplements"
+                }
+            ],
+            medicines: [
+                {
+                    id: "MED001",
+                    name: "Paracetamol 500mg",
+                    category: "Analgesic",
+                    price: 12,
+                    stock: 120
+                },
+                {
+                    id: "MED002",
+                    name: "Amoxicillin 500mg",
+                    category: "Antibiotic",
+                    price: 25,
+                    stock: 85
+                },
+                {
+                    id: "MED003",
+                    name: "Vitamin C 500mg",
+                    category: "Vitamin",
+                    price: 15,
+                    stock: 18
+                }
+            ]
+        };
+
+        function showPage(id, menu) {
+            document.querySelectorAll(".page").forEach(function(page) {
+                page.style.display = "none";
+            });
+
+            document.getElementById(id).style.display = "block";
+
+            document.querySelectorAll(".menu-item").forEach(function(item) {
+                item.classList.remove("active");
+            });
+
+            menu.classList.add("active");
+
+            if (id === "medicines") {
+                displayMedicines();
+            }
+
+            if (id === "categories") {
+                displayCategories();
+            }
+
+            if (id === "stocks") {
+                displayStocks();
+            }
+        }
+
+        function updateDashboard() {
+            document.getElementById("totalMedicines").textContent =
+                data.medicines.length;
+
+            document.getElementById("totalCategories").textContent =
+                data.categories.length;
+
+            var total = data.medicines.reduce(function(sum, medicine) {
+                return sum + medicine.stock;
+            }, 0);
+
+            document.getElementById("totalStock").textContent = total;
+        }
+
+        function displayMedicines(list) {
+            if (!list) {
+                list = data.medicines;
+            }
+
+            document.getElementById("medicineTable").innerHTML =
+                list.map(function(medicine) {
+                    return `
+                        <tr>
+                            <td>${medicine.id}</td>
+                            <td>${medicine.name}</td>
+                            <td>${medicine.category}</td>
+                            <td>₱${Number(medicine.price).toFixed(2)}</td>
+                            <td>${medicine.stock}</td>
+                        </tr>
+                    `;
+                }).join("");
+        }
+
+        function displayCategories() {
+            document.getElementById("categoryTable").innerHTML =
+                data.categories.map(function(category) {
+                    return `
+                        <tr>
+                            <td>${category.id}</td>
+                            <td>${category.name}</td>
+                            <td>${category.description}</td>
+                        </tr>
+                    `;
+                }).join("");
+        }
+
+        function displayStocks() {
+            document.getElementById("stockTable").innerHTML =
+                data.medicines.map(function(medicine) {
+                    var low = medicine.stock <= 20;
+
+                    return `
+                        <tr>
+                            <td>${medicine.name}</td>
+                            <td>${medicine.category}</td>
+                            <td>${medicine.stock}</td>
+                            <td>
+                                <span class="badge ${low ? "low" : "stock"}">
+                                    ${low ? "Low Stock" : "In Stock"}
+                                </span>
+                            </td>
+                        </tr>
+                    `;
+                }).join("");
+        }
+
+        function searchMedicine() {
+            var text = document
+                .getElementById("searchBox")
+                .value
+                .toLowerCase();
+
+            var results = data.medicines.filter(function(medicine) {
+                return medicine.name.toLowerCase().includes(text) ||
+                    medicine.category.toLowerCase().includes(text);
+            });
+
+            document.querySelectorAll(".page").forEach(function(page) {
+                page.style.display = "none";
+            });
+
+            document.getElementById("medicines").style.display = "block";
+
+            document.querySelectorAll(".menu-item").forEach(function(item) {
+                item.classList.remove("active");
+            });
+
+            document.querySelectorAll(".menu-item")[1].classList.add("active");
+
+            displayMedicines(results);
+        }
+
+        function addMedicine() {
+            var name = prompt("Medicine name:");
+
+            if (!name) {
+                return;
+            }
+
+            var category = prompt("Category:");
+            var price = Number(prompt("Price:"));
+            var stock = Number(prompt("Stock:"));
+
+            if (
+                !category ||
+                price < 0 ||
+                stock < 0 ||
+                isNaN(price) ||
+                isNaN(stock)
+            ) {
+                alert("Please enter valid information.");
+                return;
+            }
+
+            data.medicines.push({
+                id: "MED" + String(data.medicines.length + 1).padStart(3, "0"),
+                name: name.trim(),
+                category: category.trim(),
+                price: price,
+                stock: stock
+            });
+
+            displayMedicines();
+            displayStocks();
+            updateDashboard();
+        }
+
+        updateDashboard();
+        displayMedicines();
+        displayCategories();
+        displayStocks();
+    </script>
+</body>
+</html>
