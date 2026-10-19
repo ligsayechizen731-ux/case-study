@@ -1,0 +1,1331 @@
+<html>
+<head>
+    
+    <title>PharmaCare - Pharmacy Management System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #1e293b;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: #102a43;
+            color: white;
+            padding: 20px 15px;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+        }
+
+        .logo {
+            font-size: 21px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            padding: 10px;
+        }
+
+        .logo span {
+            color: #4dabf7;
+        }
+
+        .menu {
+            list-style: none;
+        }
+
+        .menu-item {
+            padding: 14px 15px;
+            margin-bottom: 6px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .menu-item:hover {
+            background: #1976d2;
+            transform: translateX(3px);
+        }
+
+        .menu-item.active {
+            background: #1976d2;
+        }
+
+        .main {
+            margin-left: 240px;
+            width: calc(100% - 240px);
+        }
+
+        .header {
+            background: white;
+            padding: 18px 30px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .search {
+            width: 55%;
+            padding: 12px 15px;
+            border: 1px solid #dbe3ec;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .search:focus {
+            border-color: #1976d2;
+        }
+
+        .admin {
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            margin-bottom: 25px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-title {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .card-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1976d2;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-header h2 {
+            font-size: 20px;
+        }
+
+        button {
+            border: none;
+            border-radius: 7px;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .primary {
+            background: #1976d2;
+            color: white;
+        }
+
+        .success {
+            background: #16a34a;
+            color: white;
+        }
+
+        .danger {
+            background: #dc2626;
+            color: white;
+        }
+
+        .secondary {
+            background: #64748b;
+            color: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 13px 10px;
+            text-align: left;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #475569;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .stock {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .low {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .expired {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .purchase-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        select,
+        input {
+            width: 100%;
+            padding: 11px;
+            margin-top: 7px;
+            margin-bottom: 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            outline: none;
+        }
+
+        select:focus,
+        input:focus {
+            border-color: #1976d2;
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .total-box {
+            background: #eff6ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 10px;
+        }
+
+        .total {
+            font-size: 26px;
+            font-weight: bold;
+            color: #1976d2;
+            margin-top: 5px;
+        }
+
+        .purchase-items {
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .purchase-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #f8fafc;
+            margin-bottom: 8px;
+            border-radius: 6px;
+        }
+
+        .remove-item {
+            background: #dc2626;
+            color: white;
+            padding: 5px 8px;
+            font-size: 11px;
+        }
+
+        .alert {
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 7px;
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .alert.expired-alert {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .page {
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 1000px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .purchase-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                width: 190px;
+            }
+
+            .main {
+                margin-left: 190px;
+                width: calc(100% - 190px);
+            }
+
+            .header {
+                padding: 15px;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .search {
+                width: 60%;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th,
+            td {
+                padding: 8px 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout">
+
+    <div class="sidebar">
+        <div class="logo"> <span>PharmaCare</span></div>
+
+        <nav class="menu">
+            <div class="menu-item active" onclick="showPage('dashboard', this)"> Dashboard</div>
+            <div class="menu-item" onclick="showPage('medicines', this)"> Medicines</div>
+            <div class="menu-item" onclick="showPage('categories', this)"> Categories</div>
+            <div class="menu-item" onclick="showPage('prices', this)"> Prices</div>
+            <div class="menu-item" onclick="showPage('stocks', this)"> Available Stocks</div>
+            <div class="menu-item" onclick="showPage('expiration', this)"> Expiration Dates</div>
+            <div class="menu-item" onclick="showPage('purchases', this)"> Customer Purchases</div>
+            <div class="menu-item" onclick="showPage('settings', this)"> Settings</div>
+        </nav>
+    </div>
+
+    <main class="main">
+        <header class="header">
+            <input
+                type="text"
+                class="search"
+                id="searchBox"
+                placeholder="Search medicine, category..."
+                onkeyup="searchMedicine()"
+            >
+            <div class="admin"> Admin</div>
+        </header>
+
+        <div class="content">
+
+            <div id="dashboard" class="page">
+                <h1>Welcome, Admin!</h1>
+                <div class="subtitle">Pharmacy Management System Dashboard</div>
+
+                <div class="cards">
+                    <div class="card">
+                        <div class="card-title">Total Medicines</div>
+                        <div class="card-number" id="totalMedicines">0</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Categories</div>
+                        <div class="card-number" id="totalCategories">0</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Total Stock</div>
+                        <div class="card-number" id="totalStock">0</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Low Stock Items</div>
+                        <div class="card-number" id="lowStock">0</div>
+                    </div>
+                </div>
+
+                <section class="section">
+                    <div class="section-header">
+                        <h2> Pharmacy Overview</h2>
+                    </div>
+                    <div>
+                        Use the menu on the left to manage medicines, categories, prices,
+                        stocks, expiration dates and customer purchases.
+                    </div>
+                </section>
+
+                <section class="section">
+                    <div class="section-header">
+                        <h2>Recent Alerts</h2>
+                    </div>
+                    <div id="dashboardAlerts"></div>
+                </section>
+            </div>
+
+            <div id="medicines" class="page" style="display:none">
+                <h1> Medicines</h1>
+                <div class="subtitle">Manage all medicines.</div>
+
+                <section class="section">
+                    <div class="section-header">
+                        <h2>Medicine List</h2>
+                        <button class="primary" onclick="addMedicine()">+ Add Medicine</button>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Medicine</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Expiration</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="medicineTable"></tbody>
+                    </table>
+                </section>
+            </div>
+
+            <div id="categories" class="page" style="display:none">
+                <h1> Categories</h1>
+                <div class="subtitle">Manage medicine categories.</div>
+
+                <section class="section">
+                    <div class="section-header">
+                        <h2>Category List</h2>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Category</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categoryTable"></tbody>
+                    </table>
+                </section>
+            </div>
+
+            <div id="prices" class="page" style="display:none">
+                <h1> Prices</h1>
+                <div class="subtitle">View medicine prices.</div>
+
+                <section class="section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Medicine</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody id="priceTable"></tbody>
+                    </table>
+                </section>
+            </div>
+
+            <div id="stocks" class="page" style="display:none">
+                <h1> Available Stocks</h1>
+                <div class="subtitle">Monitor available medicine stocks.</div>
+
+                <section class="section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Medicine</th>
+                                <th>Category</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stockTable"></tbody>
+                    </table>
+                </section>
+            </div>
+
+            <div id="expiration" class="page" style="display:none">
+                <h1> Expiration Dates</h1>
+                <div class="subtitle">Check medicine expiration dates.</div>
+
+                <section class="section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Medicine</th>
+                                <th>Expiration Date</th>
+                                <th>Days Remaining</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expirationTable"></tbody>
+                    </table>
+                </section>
+            </div>
+
+            <div id="purchases" class="page" style="display:none">
+                <h1>Customer Purchases</h1>
+                <div class="subtitle">Record purchases and calculate total cost.</div>
+
+                <section class="section">
+                    <div class="purchase-grid">
+                        <div>
+                            <h2>Customer Information</h2>
+                            <br>
+
+                            <label>Customer Name</label>
+                            <input type="text" id="customerName" placeholder="Enter customer name">
+
+                            <label>Select Medicine</label>
+                            <select id="medicineSelect"></select>
+
+                            <label>Quantity</label>
+                            <input type="number" id="quantity" value="1" min="1">
+
+                            <button class="primary" onclick="addPurchase()">Add to Purchase</button>
+                        </div>
+
+                        <div>
+                            <h2>Purchase Summary</h2>
+                            <br>
+
+                            <div class="purchase-items" id="purchaseItems">
+                                <div>No items added.</div>
+                            </div>
+
+                            <div class="total-box">
+                                <div>Total Cost</div>
+                                <div class="total" id="totalCost">₱0.00</div>
+                            </div>
+
+                            <br>
+                            <button class="success" onclick="completePurchase()">Complete Purchase</button>
+                            <button class="secondary" onclick="clearCart()">Clear Cart</button>
+                        </div>
+                    </div>
+
+                    <br><br>
+
+                    <h2>Purchase History</h2>
+                    <br>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Customer</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="purchaseHistory"></tbody>
+                    </table>
+                </section>
+            </div>
+
+            <div id="settings" class="page" style="display:none">
+                <h1> Settings</h1>
+                <div class="subtitle">Pharmacy system settings.</div>
+
+                <section class="section">
+                    <h2>System Information</h2>
+                    <br>
+                    <div><b>System:</b> PharmaCare</div>
+                    <br>
+                    <div><b>Version:</b> 1</div>
+                    <br>
+                    <div><b>Administrator:</b> Admin</div>
+                </section>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<script>
+    var jsonData = `{
+        "categories": [
+            { "id": "CAT001", "name": "Analgesic", "description": "Pain relievers" },
+            { "id": "CAT002", "name": "Antibiotic", "description": "Medicine for bacterial infections" },
+            { "id": "CAT003", "name": "Vitamin", "description": "Vitamins and supplements" },
+            { "id": "CAT004", "name": "Antihistamine", "description": "Medicine for allergy symptoms" },
+            { "id": "CAT005", "name": "Gastrointestinal", "description": "Medicine for stomach problems" }
+        ],
+        "medicines": [
+            { "id": "MED001", "name": "Paracetamol 500mg", "category": "Analgesic", "price": 12, "stock": 120, "expiration": "2027-05-15" },
+            { "id": "MED002", "name": "Amoxicillin 500mg", "category": "Antibiotic", "price": 25, "stock": 85, "expiration": "2026-11-30" },
+            { "id": "MED003", "name": "Omeprazole 20mg", "category": "Gastrointestinal", "price": 18, "stock": 10, "expiration": "2026-12-20" },
+            { "id": "MED004", "name": "Vitamin C 500mg", "category": "Vitamin", "price": 15, "stock": 200, "expiration": "2027-08-10" },
+            { "id": "MED005", "name": "Cetirizine 10mg", "category": "Antihistamine", "price": 14, "stock": 35, "expiration": "2026-10-25" },
+            { "id": "MED006", "name": "Ibuprofen 400mg", "category": "Analgesic", "price": 16, "stock": 60, "expiration": "2027-02-18" },
+            { "id": "MED007", "name": "Loperamide 2mg", "category": "Gastrointestinal", "price": 12, "stock": 25, "expiration": "2026-09-15" },
+            { "id": "MED008", "name": "Salbutamol Inhaler", "category": "Respiratory", "price": 120, "stock": 40, "expiration": "2027-06-30" }
+        ],
+        "purchases": []
+    }`;
+
+    var pharmacyData = JSON.parse(jsonData);
+    var pharmacyData = JSON.parse(jsonData);
+    var savedPharmacyData = localStorage.getItem("pharmacyData");
+
+    if (savedPharmacyData) {
+        try {
+            var savedData = JSON.parse(savedPharmacyData);
+            pharmacyData.categories = savedData.categories || [];
+            pharmacyData.medicines = savedData.medicines || [];
+            pharmacyData.purchases = savedData.purchases || [];
+        } catch (error) {
+            console.log("Saved data could not be loaded.");
+        }
+    }
+
+    function savePharmacyData() {
+        localStorage.setItem("pharmacyData", JSON.stringify(pharmacyData));
+    }
+
+    setInterval(function() {
+        savePharmacyData();
+    }, 1000);
+
+    window.addEventListener("beforeunload", function() {
+        savePharmacyData();
+    });
+
+    var purchaseCart = [];
+
+    function showPage(pageId, clickedMenu) {
+        var pages = document.querySelectorAll(".page");
+
+        pages.forEach(function(page) {
+            page.style.display = "none";
+        });
+
+        var selectedPage = document.getElementById(pageId);
+
+        if (selectedPage) {
+            selectedPage.style.display = "block";
+        }
+
+        var menuItems = document.querySelectorAll(".menu-item");
+
+        menuItems.forEach(function(item) {
+            item.classList.remove("active");
+        });
+
+        clickedMenu.classList.add("active");
+
+        if (pageId === "dashboard") {
+            loadDashboard();
+            displayDashboardAlerts();
+        }
+
+        if (pageId === "medicines") displayMedicines();
+        if (pageId === "categories") displayCategories();
+        if (pageId === "prices") displayPrices();
+        if (pageId === "stocks") displayStocks();
+        if (pageId === "expiration") displayExpiration();
+
+        if (pageId === "purchases") {
+            loadMedicineSelect();
+            displayPurchaseHistory();
+        }
+    }
+
+    function loadDashboard() {
+        document.getElementById("totalMedicines").textContent =
+            pharmacyData.medicines.length;
+
+        document.getElementById("totalCategories").textContent =
+            pharmacyData.categories.length;
+
+        var totalStock = 0;
+        var lowStock = 0;
+
+        pharmacyData.medicines.forEach(function(medicine) {
+            totalStock += medicine.stock;
+
+            if (medicine.stock <= 20) {
+                lowStock++;
+            }
+        });
+
+        document.getElementById("totalStock").textContent = totalStock;
+        document.getElementById("lowStock").textContent = lowStock;
+    }
+
+    function displayMedicines(list) {
+        var table = document.getElementById("medicineTable");
+        table.innerHTML = "";
+
+        if (!list) {
+            list = pharmacyData.medicines;
+        }
+
+        list.forEach(function(medicine) {
+            var status = "In Stock";
+            var statusClass = "stock";
+
+            if (medicine.stock <= 20) {
+                status = "Low Stock";
+                statusClass = "low";
+            }
+
+            if (medicine.stock === 0) {
+                status = "Out of Stock";
+                statusClass = "expired";
+            }
+
+            var row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${medicine.id}</td>
+                <td>${medicine.name}</td>
+                <td>${medicine.category}</td>
+                <td>₱${Number(medicine.price).toFixed(2)}</td>
+                <td>${medicine.stock}</td>
+                <td>${medicine.expiration}</td>
+                <td><span class="badge ${statusClass}">${status}</span></td>
+                <td>
+                    <button class="primary" style="padding:6px 10px;font-size:12px" onclick="editMedicine('${medicine.id}')">Edit</button>
+                    <button class="danger" style="padding:6px 10px;font-size:12px" onclick="deleteMedicine('${medicine.id}')">Delete</button>
+                </td>
+            `;
+
+            table.appendChild(row);
+        });
+    }
+
+    function displayCategories() {
+        var table = document.getElementById("categoryTable");
+        table.innerHTML = "";
+
+        pharmacyData.categories.forEach(function(category) {
+            var row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${category.id}</td>
+                <td>${category.name}</td>
+                <td>${category.description}</td>
+            `;
+
+            table.appendChild(row);
+        });
+    }
+
+    function displayPrices() {
+        var table = document.getElementById("priceTable");
+        table.innerHTML = "";
+
+        pharmacyData.medicines.forEach(function(medicine) {
+            var row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${medicine.name}</td>
+                <td>${medicine.category}</td>
+                <td>₱${Number(medicine.price).toFixed(2)}</td>
+            `;
+
+            table.appendChild(row);
+        });
+    }
+
+    function displayStocks() {
+        var table = document.getElementById("stockTable");
+        table.innerHTML = "";
+
+        pharmacyData.medicines.forEach(function(medicine) {
+            var status = "In Stock";
+            var statusClass = "stock";
+
+            if (medicine.stock <= 20) {
+                status = "Low Stock";
+                statusClass = "low";
+            }
+
+            if (medicine.stock === 0) {
+                status = "Out of Stock";
+                statusClass = "expired";
+            }
+
+            var row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${medicine.name}</td>
+                <td>${medicine.category}</td>
+                <td>${medicine.stock}</td>
+                <td><span class="badge ${statusClass}">${status}</span></td>
+            `;
+
+            table.appendChild(row);
+        });
+    }
+
+    function displayExpiration() {
+        var table = document.getElementById("expirationTable");
+        table.innerHTML = "";
+
+        var today = new Date();
+
+        pharmacyData.medicines.forEach(function(medicine) {
+            var expirationDate = new Date(medicine.expiration);
+            var difference = expirationDate - today;
+            var days = Math.ceil(difference / (1000 * 60 * 60 * 24));
+
+            var status = "Valid";
+            var statusClass = "stock";
+
+            if (days < 0) {
+                status = "Expired";
+                statusClass = "expired";
+            } else if (days <= 60) {
+                status = "Expiring Soon";
+                statusClass = "low";
+            }
+
+            var row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${medicine.name}</td>
+                <td>${medicine.expiration}</td>
+                <td>${days < 0 ? "Expired" : days + " days"}</td>
+                <td><span class="badge ${statusClass}">${status}</span></td>
+            `;
+
+            table.appendChild(row);
+        });
+    }
+
+    function displayDashboardAlerts() {
+        var container = document.getElementById("dashboardAlerts");
+        container.innerHTML = "";
+
+        var today = new Date();
+
+        pharmacyData.medicines.forEach(function(medicine) {
+            var expirationDate = new Date(medicine.expiration);
+            var difference = expirationDate - today;
+            var days = Math.ceil(difference / (1000 * 60 * 60 * 24));
+
+            if (medicine.stock <= 20) {
+                var stockAlert = document.createElement("div");
+                stockAlert.className = "alert";
+                stockAlert.innerHTML = `
+                    ! <b>${medicine.name}</b>
+                    has only ${medicine.stock} stock remaining.
+                `;
+                container.appendChild(stockAlert);
+            }
+
+            if (days <= 60) {
+                var expirationAlert = document.createElement("div");
+                expirationAlert.className =
+                    days < 0 ? "alert expired-alert" : "alert";
+
+                expirationAlert.innerHTML = `
+                    ${days < 0 ? "!" : "!"}
+                    <b>${medicine.name}</b>
+                    ${days < 0 ? "has expired." : "expires in " + days + " days."}
+                `;
+
+                container.appendChild(expirationAlert);
+            }
+        });
+
+        if (container.innerHTML === "") {
+            container.innerHTML = "<div>No alerts. Everything looks good.</div>";
+        }
+    }
+
+    function loadMedicineSelect() {
+        var select = document.getElementById("medicineSelect");
+        if (!select) return;
+
+        select.innerHTML = '<option value="">-- Select Medicine --</option>';
+
+        pharmacyData.medicines.forEach(function(medicine) {
+            if (medicine.stock > 0) {
+                var option = document.createElement("option");
+                option.value = medicine.id;
+                option.textContent =
+                    medicine.name + " - ₱" +
+                    Number(medicine.price).toFixed(2) +
+                    " (" + medicine.stock + " available)";
+                select.appendChild(option);
+            }
+        });
+    }
+
+    function addPurchase() {
+        var medicineId = document.getElementById("medicineSelect").value;
+        var quantity = parseInt(document.getElementById("quantity").value, 10);
+
+        if (!medicineId) {
+            alert("Please select a medicine.");
+            return;
+        }
+
+        if (quantity <= 0 || isNaN(quantity)) {
+            alert("Please enter a valid quantity.");
+            return;
+        }
+
+        var medicine = pharmacyData.medicines.find(function(item) {
+            return item.id === medicineId;
+        });
+
+        if (!medicine) {
+            alert("Medicine not found.");
+            return;
+        }
+
+        var existing = purchaseCart.find(function(item) {
+            return item.id === medicineId;
+        });
+
+        var currentQuantity = existing ? existing.quantity : 0;
+
+        if (currentQuantity + quantity > medicine.stock) {
+            alert("Not enough stock available.");
+            return;
+        }
+
+        if (existing) {
+            existing.quantity += quantity;
+        } else {
+            purchaseCart.push({
+                id: medicine.id,
+                name: medicine.name,
+                price: medicine.price,
+                quantity: quantity
+            });
+        }
+
+        displayPurchaseCart();
+    }
+
+    function displayPurchaseCart() {
+        var container = document.getElementById("purchaseItems");
+        container.innerHTML = "";
+
+        if (purchaseCart.length === 0) {
+            container.innerHTML = "<div>No items added.</div>";
+            document.getElementById("totalCost").textContent = "₱0.00";
+            return;
+        }
+
+        purchaseCart.forEach(function(item, index) {
+            var itemTotal = item.price * item.quantity;
+            var div = document.createElement("div");
+            div.className = "purchase-item";
+
+            div.innerHTML = `
+                <span>${item.name} × ${item.quantity} = ₱${itemTotal.toFixed(2)}</span>
+                <button class="remove-item" onclick="removeFromCart(${index})">Remove</button>
+            `;
+
+            container.appendChild(div);
+        });
+
+        calculateTotal();
+    }
+
+    function removeFromCart(index) {
+        purchaseCart.splice(index, 1);
+        displayPurchaseCart();
+    }
+
+    function clearCart() {
+        purchaseCart = [];
+        displayPurchaseCart();
+    }
+
+    function calculateTotal() {
+        var total = 0;
+
+        purchaseCart.forEach(function(item) {
+            total += item.price * item.quantity;
+        });
+
+        document.getElementById("totalCost").textContent =
+            "₱" + total.toFixed(2);
+    }
+
+    function completePurchase() {
+        var customerName =
+            document.getElementById("customerName").value.trim();
+
+        if (!customerName) {
+            alert("Please enter customer name.");
+            return;
+        }
+
+        if (purchaseCart.length === 0) {
+            alert("Please add a medicine.");
+            return;
+        }
+
+        var total = 0;
+
+        for (var i = 0; i < purchaseCart.length; i++) {
+            var cartItem = purchaseCart[i];
+            var medicine = pharmacyData.medicines.find(function(item) {
+                return item.id === cartItem.id;
+            });
+
+            if (!medicine || cartItem.quantity > medicine.stock) {
+                alert("Not enough stock available for " + cartItem.name + ".");
+                return;
+            }
+        }
+
+        purchaseCart.forEach(function(item) {
+            var medicine = pharmacyData.medicines.find(function(m) {
+                return m.id === item.id;
+            });
+
+            if (medicine) {
+                medicine.stock -= item.quantity;
+            }
+
+            total += item.price * item.quantity;
+        });
+
+        pharmacyData.purchases.push({
+            customer: customerName,
+            items: purchaseCart.map(function(item) {
+                return {
+                    medicine: item.name,
+                    quantity: item.quantity,
+                    price: item.price
+                };
+            }),
+            total: total,
+            date: new Date().toLocaleDateString()
+        });
+
+        savePharmacyData();
+
+        alert(
+            "Purchase completed!\n\n" +
+            "Customer: " + customerName +
+            "\nTotal Cost: ₱" + total.toFixed(2)
+        );
+
+        purchaseCart = [];
+        document.getElementById("customerName").value = "";
+        document.getElementById("quantity").value = 1;
+
+        displayPurchaseCart();
+        loadMedicineSelect();
+        displayPurchaseHistory();
+        loadDashboard();
+        displayMedicines();
+        displayStocks();
+        displayExpiration();
+        displayDashboardAlerts();
+    }
+
+    function displayPurchaseHistory() {
+        var table = document.getElementById("purchaseHistory");
+        if (!table) return;
+
+        table.innerHTML = "";
+
+        pharmacyData.purchases.forEach(function(purchase) {
+            var row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${purchase.customer}</td>
+                <td>${purchase.items.length} item(s)</td>
+                <td>₱${Number(purchase.total).toFixed(2)}</td>
+                <td>${purchase.date}</td>
+            `;
+
+            table.appendChild(row);
+        });
+
+        if (pharmacyData.purchases.length === 0) {
+            table.innerHTML = `
+                <tr>
+                    <td colspan="4">No purchases yet.</td>
+                </tr>
+            `;
+        }
+    }
+
+    function searchMedicine() {
+        var search = document.getElementById("searchBox").value.toLowerCase();
+
+        var filtered = pharmacyData.medicines.filter(function(medicine) {
+            return (
+                medicine.name.toLowerCase().includes(search) ||
+                medicine.category.toLowerCase().includes(search) ||
+                medicine.id.toLowerCase().includes(search)
+            );
+        });
+
+        if (search.length > 0) {
+            document.querySelectorAll(".page").forEach(function(page) {
+                page.style.display = "none";
+            });
+
+            document.getElementById("medicines").style.display = "block";
+
+            document.querySelectorAll(".menu-item").forEach(function(item) {
+                item.classList.remove("active");
+            });
+
+            document.querySelectorAll(".menu-item")[1].classList.add("active");
+        }
+
+        displayMedicines(filtered);
+    }
+
+    function addMedicine() {
+        var name = prompt("Enter medicine name:");
+        if (!name) return;
+
+        var category = prompt("Enter category:");
+        if (!category) return;
+
+        var price = parseFloat(prompt("Enter price:"));
+        var stock = parseInt(prompt("Enter available stock:"), 10);
+        var expiration = prompt("Enter expiration date (YYYY-MM-DD):");
+
+        if (
+            isNaN(price) || price < 0 ||
+            isNaN(stock) || stock < 0 ||
+            !expiration ||
+            isNaN(new Date(expiration).getTime())
+        ) {
+            alert("Invalid medicine information.");
+            return;
+        }
+
+        // use highest existing ID + 1 so IDs never duplicate after a delete
+        var maxId = 0;
+        pharmacyData.medicines.forEach(function(m) {
+            var n = parseInt(m.id.replace("MED", ""), 10);
+            if (n > maxId) maxId = n;
+        });
+
+        var newMedicine = {
+            id: "MED" + String(maxId + 1).padStart(3, "0"),
+            name: name.trim(),
+            category: category.trim(),
+            price: price,
+            stock: stock,
+            expiration: expiration
+        };
+
+        pharmacyData.medicines.push(newMedicine);
+        savePharmacyData();
+
+        displayMedicines();
+        loadMedicineSelect();
+        loadDashboard();
+        displayPrices();
+        displayStocks();
+        displayExpiration();
+        displayDashboardAlerts();
+
+        alert("Medicine added successfully!");
+    }
+
+    function refreshMedicineViews() {
+        if (document.getElementById("searchBox").value.trim() !== "") {
+            searchMedicine();
+        } else {
+            displayMedicines();
+        }
+        loadMedicineSelect();
+        loadDashboard();
+        displayPrices();
+        displayStocks();
+        displayExpiration();
+        displayDashboardAlerts();
+    }
+
+    function editMedicine(id) {
+        var medicine = pharmacyData.medicines.find(function(item) {
+            return item.id === id;
+        });
+
+        if (!medicine) {
+            alert("Medicine not found.");
+            return;
+        }
+
+        var name = prompt("Edit medicine name:", medicine.name);
+        if (name === null) return;
+        if (!name.trim()) {
+            alert("Medicine name is required.");
+            return;
+        }
+
+        var category = prompt("Edit category:", medicine.category);
+        if (category === null) return;
+        if (!category.trim()) {
+            alert("Category is required.");
+            return;
+        }
+
+        var price = parseFloat(prompt("Edit price:", medicine.price));
+        var stock = parseInt(prompt("Edit available stock:", medicine.stock), 10);
+        var expiration = prompt("Edit expiration date (YYYY-MM-DD):", medicine.expiration);
+
+        if (
+            isNaN(price) || price < 0 ||
+            isNaN(stock) || stock < 0 ||
+            !expiration ||
+            isNaN(new Date(expiration).getTime())
+        ) {
+            alert("Invalid medicine information.");
+            return;
+        }
+
+        medicine.name = name.trim();
+        medicine.category = category.trim();
+        medicine.price = price;
+        medicine.stock = stock;
+        medicine.expiration = expiration;
+
+        // update cart too, in case this medicine is in it
+        purchaseCart.forEach(function(item) {
+            if (item.id === id) {
+                item.name = medicine.name;
+                item.price = medicine.price;
+            }
+        });
+        displayPurchaseCart();
+
+        savePharmacyData();
+        refreshMedicineViews();
+        alert("Medicine updated successfully!");
+    }
+
+    function deleteMedicine(id) {
+        var medicine = pharmacyData.medicines.find(function(item) {
+            return item.id === id;
+        });
+
+        if (!medicine) return;
+
+        if (!confirm("Delete " + medicine.name + "? This cannot be undone.")) return;
+
+        pharmacyData.medicines = pharmacyData.medicines.filter(function(item) {
+            return item.id !== id;
+        });
+
+        // remove from cart if present
+        purchaseCart = purchaseCart.filter(function(item) {
+            return item.id !== id;
+        });
+        displayPurchaseCart();
+
+        savePharmacyData();
+        refreshMedicineViews();
+    }
+
+    loadDashboard();
+    displayMedicines();
+    displayCategories();
+    displayPrices();
+    displayStocks();
+    displayExpiration();
+    displayDashboardAlerts();
+    loadMedicineSelect();
+    displayPurchaseHistory();
+</script>
+</body>
+</html>
